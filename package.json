@@ -1,0 +1,56 @@
+{
+  "name": "bumper",
+  "version": "1.1.0",
+  "bin": "./bin/index.js",
+  "description": "Work better with libraries that follow semver",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "release-to-github-with-changelog-pre-release-checks && npm run lint && npm run check-format && jest",
+    "check-format": "prettier-eslint \"{bin,lib}/**/*.js\" --list-different",
+    "lint": "eslint bin lib",
+    "release": "release-to-github-with-changelog && npm publish --access=public",
+    "format": "prettier-eslint \"{bin,lib}/**/*.js\" --write",
+    "test:watch": "jest --watch"
+  },
+  "files": [
+    "bin/",
+    "lib/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tankenstein/bumper.git"
+  },
+  "keywords": [
+    "npm",
+    "bump",
+    "version",
+    "semver"
+  ],
+  "author": "Uku Markus Tammet <ukutammet@gmail.com>",
+  "license": "MIT",
+  "lint-staged": {
+    "*.js": [
+      "prettier-eslint \"{src,docs}/**/*.js\" --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "get-stdin": "^6.0.0",
+    "semver": "^5.5.1",
+    "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.0",
+    "jest": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "prettier-eslint-cli": "^4.7.1",
+    "release-to-github-with-changelog": "^1.2.1"
+  }
+}

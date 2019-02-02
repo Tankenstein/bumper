@@ -1,0 +1,53 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/bumper
+  docker:
+    - image: circleci/node:10.6
+
+jobs:
+  dependencies:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: npm test
+  release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
+          name: Publish on github and npm
+          command: npm run release
+
+workflows:
+  version: 2
+  build-test-and-release:
+    jobs:
+      - dependencies
+      - test:
+          requires:
+            - dependencies
+      - release:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
